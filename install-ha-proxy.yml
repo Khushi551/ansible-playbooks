@@ -4,9 +4,9 @@
   become: yes
   become_user: root
   vars:
-   backend_hosts: "{{groups['webservers']|
-       map('extract',hostvars)|list|
-       items2dict(key_name='ansible_host', value_name='ansible_host')|
+   backend_hosts: "{{groups['webservers'] |
+       map('extract',hostvars) | list |
+       items2dict(key_name='ansible_host', value_name='ansible_host') |
        dict2items(key_name='name', value_name='address')
        }}"
   tasks:
