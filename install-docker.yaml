@@ -58,7 +58,17 @@
         dest: /home/ubuntu/webcontainer/index.html
         owner: ubuntu
         group: docker
-        mode: 0744
+        mode: 0774
+    - name: Create haproxy config directory
+      file:
+        path: /home/ubuntu/loadbalancer
+        state: directory
+    - name: Create haproxy.cfg
+      template:
+        src: haproxy.cfg.j2
+        dest:  /home/ubuntu/loadbalancer/haproxy.cfg
+        owner: ubuntu
+        mode: 0774           
     - name: Create webserver containers
       community.docker.docker_container:
         name: "{{ http_container_name }}{{ item }}"
@@ -68,4 +78,12 @@
           - /home/ubuntu/webcontainer/:/usr/local/apache2/htdocs/
         ports:
         - "808{{ item }}:80"
-      with_sequence: count={{ http_container_count }}        
+      with_sequence: count={{ http_container_count }}
+    - name: Create Haproxy container
+      community.docker.docker_container:
+        name: loadbalancer
+        image: 'haproxy'
+        state: started
+        volumes:
+          - /home/ubuntu/loadbalancer/haproxy.cfg:/usr/local/etc/haproxy.cfg
+        network_mode: host        
