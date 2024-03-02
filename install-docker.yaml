@@ -40,7 +40,8 @@
         name: docker-ce
         state: latest
         update_cache: true
-    - name: Install Docker Module fir python
+
+    - name: Install Docker Module for python
       pip:
         name: docker
     - name: Add ubuntu user to Docker group 
@@ -68,6 +69,7 @@
         src: haproxy.cfg.j2
         dest:  /home/ubuntu/loadbalancer/haproxy.cfg
         owner: ubuntu
+        group: docker
         mode: 0774           
     - name: Create webserver containers
       community.docker.docker_container:
