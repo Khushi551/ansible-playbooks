@@ -88,4 +88,5 @@
         state: started
         volumes:
           - /home/ubuntu/loadbalancer/haproxy.cfg:/usr/local/etc/haproxy.cfg
-        network_mode: host        
+        network_mode: host
+        command: haproxy -f /usr/local/etc/haproxy.cfg        
